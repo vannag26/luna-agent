@@ -62,6 +62,13 @@ bot.on('text', async (ctx) => {
 const PORT = process.env.PORT || 3000;
 http.createServer((req, res) => res.end('Luna is alive')).listen(PORT, () => {
   console.log('keepalive server on :' + PORT);
+  const host = process.env.RENDER_EXTERNAL_HOSTNAME || ('localhost:' + PORT);
+  const isLocal = host.startsWith('localhost');
+  const pinger = isLocal ? http : require('https');
+  setInterval(() => {
+    const url = (isLocal ? 'http://' : 'https://') + host + '/';
+    pinger.get(url, (r) => console.log('keep-alive: ' + r.statusCode)).on('error', (e) => console.log('keep-alive err: ' + e.message));
+  }, 840000);
 });
 
 // Start Telegram polling â dropPendingUpdates prevents 409 on cold start
