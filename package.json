@@ -1,6 +1,8 @@
 {
   "name": "luna-agent",
   "version": "1.0.0",
+  "description": "Luna \u2014 V&DG Chief Development & Strategy Officer",
+  "main": "src/luna.js",
   "scripts": {
     "start": "node src/luna.js"
   },
