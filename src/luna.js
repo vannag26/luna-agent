@@ -5,7 +5,7 @@ const fs        = require('fs-extra');
 const path      = require('path');
 const http      = require('http');
 
-// ── Config ───────────────────────────────────────────────────────────────────
+// ââ Config âââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
 const BOT_TOKEN       = process.env.TELEGRAM_BOT_TOKEN;
 const ALLOWED_USER_ID = process.env.ALLOWED_USER_ID;
 const VDG_GATEWAY_URL = process.env.VDG_GATEWAY_URL || 'http://localhost:3099/v1';
@@ -35,10 +35,10 @@ async function callClaude(messages, systemPrompt) {
   return res.data?.content?.[0]?.text || res.data?.choices?.[0]?.message?.content || '';
 }
 
-bot.use((ctx, next) => { if (!ALLOWED_USER_ID || ctx.from?.id?.toString() === ALLOWED_USER_ID.toString()) { return next(); } return ctx.reply('⛔ Unauthorized'); });
-bot.command('start', (ctx) => { ctx.reply('🌙 *Luna online* — CDSO, V&DG Management LLC. What are we building?', { parse_mode: 'Markdown' }); });
-bot.command('clear', (ctx) => { saveHistory(ctx.from.id, []); ctx.reply('🗑️ Conversation cleared.'); });
-bot.command('status', (ctx) => { const memories = getMemories(); ctx.reply(`🌙 Luna — LIVE\nModel: ${DEFAULT_MODEL}\nMemories: ${memories.length}\nGateway: ${VDG_GATEWAY_URL}`); });
+bot.use((ctx, next) => { if (!ALLOWED_USER_ID || ctx.from?.id?.toString() === ALLOWED_USER_ID.toString()) { return next(); } return ctx.reply('â Unauthorized'); });
+bot.command('start', (ctx) => { ctx.reply('ð *Luna online* â CDSO, V&DG Management LLC. What are we building?', { parse_mode: 'Markdown' }); });
+bot.command('clear', (ctx) => { saveHistory(ctx.from.id, []); ctx.reply('ðï¸ Conversation cleared.'); });
+bot.command('status', (ctx) => { const memories = getMemories(); ctx.reply(`ð Luna â LIVE\nModel: ${DEFAULT_MODEL}\nMemories: ${memories.length}\nGateway: ${VDG_GATEWAY_URL}`); });
 
 bot.on('text', async (ctx) => {
   const userId = ctx.from.id.toString();
@@ -54,17 +54,17 @@ bot.on('text', async (ctx) => {
     saveHistory(userId, history);
     const MAX = 4000;
     if (reply.length <= MAX) { await ctx.reply(reply); } else { for (let i = 0; i < reply.length; i += MAX) await ctx.reply(reply.slice(i, i + MAX)); }
-  } catch (err) { console.error('Luna error:', err.message); await ctx.reply(`⚠️ Error: ${err.message}. Try again in 30s.`); }
+  } catch (err) { console.error('Luna error:', err.message); await ctx.reply(`â ï¸ Error: ${err.message}. Try again in 30s.`); }
 });
 
-// ── Launch ────────────────────────────────────────────────────────────────────
+// ââ Launch ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
 // Keepalive HTTP server required by Render Web Service (port binding)
 const PORT = process.env.PORT || 3000;
 http.createServer((req, res) => res.end('Luna is alive')).listen(PORT, () => {
   console.log('keepalive server on :' + PORT);
 });
 
-// Start Telegram polling — dropPendingUpdates prevents 409 on cold start
-bot.launch({ dropPendingUpdates: true }).then(() => console.log('🌙 Luna is live'));
+// Start Telegram polling â dropPendingUpdates prevents 409 on cold start
+bot.launch({ dropPendingUpdates: true }).then(() => console.log('ð Luna is live'));
 process.once('SIGINT',  () => bot.stop('SIGINT'));
 process.once('SIGTERM', () => bot.stop('SIGTERM'));
