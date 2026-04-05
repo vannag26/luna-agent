@@ -80,7 +80,7 @@ async function callClaude(messages, systemPrompt) {
       headers: {
         Authorization: `Bearer ${VDG_INTERNAL_KEY}`,
         'Content-Type': 'application/json',
-        'x-vdg-product': 'luna'
+        'x-vdg-product': 'luna
       },
       timeout: 120000
     }
